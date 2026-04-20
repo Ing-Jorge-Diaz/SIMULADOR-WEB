@@ -1,6 +1,6 @@
 /* Variables de color */
 :root {
-    --color-principal: #1a1a2e;
+    --color-principal: rgba(11, 11, 32, 0.667);
     --color-secundario: #16213e;
     --color-acento: #0f3460;
     --color-destacado: #4cc9f0;
