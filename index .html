@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Herramienta de Métodos Numéricos</title>
+    <link rel="stylesheet" href="C:\Users\DELL\OneDrive\Escritorio\Programación web\SimuladorWEB\style.css">
+    <script src="C:\Users\DELL\OneDrive\Escritorio\Programación web\SimuladorWEB\script.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <!-- Barra superior -->
+        <div class="top-bar">
+            <h1><i class="fas fa-bolt"></i> Herramienta de Métodos Numéricos</h1>
+            <button class="help-btn" onclick="mostrarAyuda()">
+                <i class="fas fa-question-circle"></i> Ayuda
+            </button>
+        </div>
+        
+        <p class="subtitle">Cálculo Integral y Ecuaciones Diferenciales</p>
+        
+        <!-- Contenedor principal -->
+        <div class="main-content">
+            <!-- Panel izquierdo - Métodos -->
+            <div class="left-panel">
+                <div class="section-title">
+                    <i class="fas fa-chart-bar"></i> MÉTODOS DISPONIBLES
+                </div>
+                
+                <div class="methods-container">
+                    <button class="method-btn" onclick="mostrarParametros('trapecio')">
+                        <span class="method-icon">1️⃣</span> TRAPECIO COMPUESTO
+                    </button>
+                    
+                    <button class="method-btn" onclick="mostrarParametros('simpson')">
+                        <span class="method-icon">2️⃣</span> SIMPSON COMPUESTO
+                    </button>
+                    
+                    <button class="method-btn" onclick="mostrarParametros('euler')">
+                        <span class="method-icon">3️⃣</span> EULER
+                    </button>
+                    
+                    <button class="method-btn" onclick="mostrarParametros('taylor')">
+                        <span class="method-icon">4️⃣</span> TAYLOR ORDEN 2
+                    </button>
+                    
+                    <button class="method-btn" onclick="mostrarParametros('rungekutta')">
+                        <span class="method-icon">5️⃣</span> RUNGE-KUTTA 4
+                    </button>
+                </div>
+                
+                <div class="separator"></div>
+                
+                <!-- Opciones de visualización -->
+                <div class="graph-options">
+                    
+                    
+                </div>
+                
+                <div class="separator"></div>
+                
+                <button class="exit-btn" onclick="window.close()">
+                    <i class="fas fa-door-open"></i> SALIR
+                </button>
+            </div>
+            
+            <!-- Panel derecho - Parámetros y resultados -->
+            <div class="right-panel">
+                <!-- Panel de parámetros -->
+                <div class="parameters-section">
+                    <div class="section-title">
+                        <i class="fas fa-cog"></i> PARÁMETROS
+                    </div>
+                    <div id="parametros-container">
+                        <!-- Los parámetros se cargarán aquí dinámicamente -->
+                        <p class="info-text">Selecciona un método para comenzar</p>
+                    </div>
+                </div>
+                
+                <!-- Panel de resultados -->
+                <div class="results-section">
+                    <div class="section-title">
+                        <i class="fas fa-chart-line"></i> RESULTADOS
+                    </div>
+                    
+                    <div id="conversion-indicator" class="conversion-indicator"></div>
+                    
+                    <div class="results-container">
+                        <textarea id="resultados-text" readonly 
+                                  placeholder="Aquí aparecerán los resultados del cálculo..."></textarea>
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calcular()">
+                        <i class="fas fa-rocket"></i> CALCULAR
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel de gráficas -->
+        <div class="graphics-section">
+            <div class="section-title">
+                <i class="fas fa-chart-area"></i> GRÁFICAS Y VISUALIZACIÓN
+            </div>
+            
+            <div class="graphics-container">
+                <div class="graph-buttons">
+                    <button class="graph-btn" onclick="graficarMetodo()">
+                        <i class="fas fa-chart-line"></i> Graficar Método Actual
+                    </button>
+                    
+                    <button class="graph-btn" onclick="graficarAnalisisError()">
+                        <i class="fas fa-chart-bar"></i> Análisis de Error
+                    </button>
+                    
+                    <button class="graph-btn" onclick="compararEdos()">
+    <i class="fas fa-project-diagram"></i> Comparar EDOs
+</button>
+    <!-- NUEVO BOTÓN AÑADIDO -->
+    <button class="graph-btn" onclick="compararTrapecioSimpson()">
+        <i class="fas fa-balance-scale"></i> Trapecio vs Simpson
+    </button>
+                    
+                    <button class="graph-btn new-window-btn" onclick="abrirNuevaVentana()">
+                        <i class="fas fa-external-link-alt"></i> Abrir en nueva ventana
+                    </button>
+                    
+                    <div class="graph-controls-mini">
+                        <button class="control-btn-mini zoom-in-btn" onclick="zoomIn()" title="Zoom In">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="control-btn-mini zoom-out-btn" onclick="zoomOut()" title="Zoom Out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="control-btn-mini reset-btn" onclick="resetZoom()" title="Restablecer vista">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <span id="graph-status" class="graph-status">Gráfica no activa</span>
+                </div>
+                
+                <div class="graph-area">
+                    <canvas id="graphCanvas"></canvas>
+                    <div id="graphControls" class="graph-controls" style="display: none;">
+                        <button class="control-btn save-btn" onclick="guardarGrafica()">
+                            <i class="fas fa-save"></i> Guardar Imagen
+                        </button>
+                        <button class="control-btn zoom-btn" onclick="ajustarZoom()">
+                            <i class="fas fa-search"></i> Ajustar Zoom
+                        </button>
+                        <button class="control-btn close-btn" onclick="limpiarGrafica()">
+                            <i class="fas fa-times"></i> Cerrar Gráfica
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Historial de cálculos -->
+            <div class="historial-section">
+                <div class="historial-title">
+                    <span><i class="fas fa-history"></i> HISTORIAL DE CÁLCULOS</span>
+                    <button class="historial-btn" onclick="limpiarHistorial()">
+                        <i class="fas fa-trash"></i> Limpiar
+                    </button>
+                </div>
+                <div id="historial-list" class="historial-list">
+                    <!-- Historial se cargará dinámicamente aquí -->
+                    <div class="historial-empty">No hay cálculos en el historial</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de ayuda -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> Ayuda - Formato de Funciones</h2>
+                <span class="close" onclick="cerrarAyuda()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <pre>
+📝 FORMATOS ACEPTADOS:
+
+Puedes escribir como en matemáticas:
+────────────────────────────────────
+EJEMPLO           →   EL PROGRAMA CONVIERTE A:
+────────────────────────────────────
+x^2               →   x**2
+3x + 2            →   3*x + 2
+sen(x)            →   Math.sin(x)
+cos(x)            →   Math.cos(x)
+tan(x)            →   Math.tan(x)
+ln(x)             →   Math.log(x)
+e^x               →   Math.exp(x)
+√x                →   Math.sqrt(x)
+π                 →   Math.PI
+────────────────────────────────────
+MÁS EJEMPLOS:
+────────────────────────────────────
+5 - 0.1x^2        →   5 - 0.1*x**2
+4cos(x)           →   4*Math.cos(x)
+sen(2x)           →   Math.sin(2*x)
+e^(x^2)           →   Math.exp(x**2)
+1/(1+x^2)         →   1/(1+x**2)
+────────────────────────────────────
+CONSEJOS:
+• Usa ^ para potencias
+• No necesitas * entre número y variable: 2x → 2*x
+• Puedes usar sen, cos, tan (en español)
+• Usa ln() para logaritmo natural
+• π o pi para 3.1416
+────────────────────────────────────
+                </pre>
+            </div>
+        </div>
+    </div>
+    
+    <script src="C:\Users\DELL\OneDrive\Escritorio\Programación web\SimuladorWEB\script.js"></script>
+</body>
+</html>
